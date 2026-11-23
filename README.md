@@ -177,7 +177,7 @@ classDiagram
 
 ### Tarjetas de prueba sugeridas
 
-| Franquicia | Número (escribir sin espacios) | Se muestra | CVV | Resultado en recibo |
+| Franquicia | Número (escribir sin espacios) | Se muestra | Fecha Vencimiento | CVV | Resultado en recibo |
 |---|---|---|---|---|
 | **Visa** (16 dígitos) | `4111111111111111` | `4111 1111 1111 1111` | Futuro (ej. `12/28`) | `123` | `Visa •••• 1111` |
 | **American Express** (15 dígitos) | `378282246310005` | `3782 822463 10005` | Futuro (ej. `01/30`) | `1234` | `Amex •••• 0005` |
