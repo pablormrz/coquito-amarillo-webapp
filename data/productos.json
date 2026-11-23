@@ -1,0 +1,50 @@
+[
+    {
+        "sku": "CAF-500",
+        "nombre": "Café de origen Antioquia 500 g",
+        "precio": 38000,
+        "stock": 40,
+        "categoria": "Bebidas",
+        "emoji": " "
+    },
+    {
+        "sku": "ARE-250",
+        "nombre": "Arequipe artesanal 250 g",
+        "precio": 14500,
+        "stock": 30,
+        "categoria": "Dulces",
+        "emoji": " "
+    },
+    {
+        "sku": "COQ-12",
+        "nombre": "Coquitos x12",
+        "precio": 18000,
+        "stock": 5,
+        "categoria": "Dulces",
+        "emoji": " "
+    },
+    {
+        "sku": "BOC-24",
+        "nombre": "Bocadillo veleño x24",
+        "precio": 16000,
+        "stock": 25,
+        "categoria": "Dulces",
+        "emoji": " "
+    },
+    {
+        "sku": "CHO-500",
+        "nombre": "Chocolate de mesa 500 g",
+        "precio": 12500,
+        "stock": 35,
+        "categoria": "Bebidas",
+        "emoji": " "
+    },
+    {
+        "sku": "PAN-1K",
+        "nombre": "Panela 1 kg",
+        "precio": 9800,
+        "stock": 50,
+        "categoria": "Endulzantes",
+        "emoji": " "
+    }
+]
