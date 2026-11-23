@@ -159,6 +159,9 @@ export class CheckoutUI {
             if (ev.target.name === "medio")
                 this.#mostrarMedio(ev.target.value);
         });
+        e.tarjetaNumero.addEventListener("input", (ev) => this.#onInputNumeroTarjeta(ev));
+        e.tarjetaVencimiento.addEventListener("input", (ev) => this.#onInputVencimiento(ev));
+        e.tarjetaCvv.addEventListener("input", (ev) => this.#onInputCvv(ev));
         e.btnCerrarRecibo.addEventListener("click", () => { e.recibo.hidden = true; });
         e.btnBorrarHistorial.addEventListener("click", () => {
             this.#repositorio.limpiar();
@@ -381,5 +384,68 @@ export class CheckoutUI {
         aviso.textContent = mensaje;
         this.#el.avisos.append(aviso);
         setTimeout(() => aviso.remove(), 6000);
+    }
+    // =================== Formateo de tarjeta ===================
+    #onInputNumeroTarjeta(ev) {
+        const input = ev.target;
+        const cursor = input.selectionStart;
+        const anterior = input.value;
+        const digitosAntes = anterior.slice(0, cursor).replace(/\D/g, "").length;
+        const nuevo = this.#formatearNumeroTarjeta(anterior);
+        input.value = nuevo;
+
+        let pos = 0;
+        let conteo = 0;
+        while (pos < nuevo.length && conteo < digitosAntes) {
+            if (/\d/.test(nuevo[pos])) conteo++;
+            pos++;
+        }
+        input.setSelectionRange(pos, pos);
+    }
+    #formatearNumeroTarjeta(valor) {
+        const digitos = String(valor ?? "").replace(/\D/g, "");
+        if (/^3[47]/.test(digitos)) {
+            const d = digitos.slice(0, 15);
+            const partes = [];
+            if (d.length > 0) partes.push(d.slice(0, 4));
+            if (d.length > 4) partes.push(d.slice(4, 10));
+            if (d.length > 10) partes.push(d.slice(10, 15));
+            return partes.join(" ");
+        }
+        const d = digitos.slice(0, 16);
+        const grupos = d.match(/.{1,4}/g);
+        return grupos ? grupos.join(" ") : "";
+    }
+    #onInputVencimiento(ev) {
+        const input = ev.target;
+        const cursor = input.selectionStart;
+        const anterior = input.value;
+        const digitosAntes = anterior.slice(0, cursor).replace(/\D/g, "").length;
+        const nuevo = this.#formatearVencimiento(anterior);
+        input.value = nuevo;
+
+        let pos = 0;
+        let conteo = 0;
+        while (pos < nuevo.length && conteo < digitosAntes) {
+            if (/\d/.test(nuevo[pos])) conteo++;
+            pos++;
+        }
+        if (nuevo[pos] === "/" && conteo === digitosAntes && cursor >= 2) {
+            pos++;
+        }
+        input.setSelectionRange(pos, pos);
+    }
+    #formatearVencimiento(valor) {
+        const digitos = String(valor ?? "").replace(/\D/g, "").slice(0, 4);
+        if (digitos.length > 2) {
+            return `${digitos.slice(0, 2)}/${digitos.slice(2)}`;
+        }
+        if (String(valor ?? "").endsWith("/") && digitos.length === 2) {
+            return `${digitos}/`;
+        }
+        return digitos;
+    }
+    #onInputCvv(ev) {
+        ev.target.value = ev.target.value.replace(/\D/g, "").slice(0, 4);
     }
 }

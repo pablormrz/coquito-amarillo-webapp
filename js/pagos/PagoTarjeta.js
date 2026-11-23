@@ -25,12 +25,15 @@ export class PagoTarjeta extends MedioPago {
     get nombre() { return "Tarjeta"; }
     get descripcionSegura() { return `${this.#marca} •••• ${this.#ultimos4}`; }
     validar() {
-        if (!/^\d{13,19}$/.test(this.#numero ?? "") || !PagoTarjeta.#luhn(this.#numero)) {
+        if (!/^\d{15,16}$/.test(this.#numero ?? "")) {
+            throw new Error("El número de tarjeta debe tener 15 o 16 dígitos.");
+        }
+        if (!PagoTarjeta.#luhn(this.#numero)) {
             throw new Error("Número de tarjeta inválido.");
         }
         if (this.#titular.length < 3) throw new Error("Escriba el nombre del titular como aparece en la tarjeta.");
-        if (!this.#vigente()) throw new Error("La fecha de vencimiento no es válida o la tarjeta está vencida (formato MM / AA).");
-        if (!/^\d{3,4}$/.test(this.#cvv ?? "")) throw new Error("El CVV debe tener 3 o 4 dígitos.");
+        this.#validarVencimiento();
+        if (!/^\d{3,4}$/.test(this.#cvv ?? "")) throw new Error("El CVV debe tener entre 3 y 4 dígitos.");
         return true;
     }
     calcularComision(monto) { return Math.round(monto * PagoTarjeta.#TASA); }
@@ -41,13 +44,19 @@ export class PagoTarjeta extends MedioPago {
         this.#cvv = null;
         return resultado;
     }
-    #vigente() {
+    #validarVencimiento() {
         const coincide = /^(0[1-9]|1[0-2])\/(\d{2})$/.exec(this.#vencimiento);
-        if (!coincide) return false;
+        if (!coincide || this.#vencimiento.length !== 5) {
+            throw new Error("La fecha de vencimiento debe tener el formato MM/AA (ej: 12/28).");
+        }
         const mes = Number(coincide[1]);
         const anio = 2000 + Number(coincide[2]);
         const hoy = new Date();
-        return anio > hoy.getFullYear() || (anio === hoy.getFullYear() && mes >= hoy.getMonth() + 1);
+        const anioActual = hoy.getFullYear();
+        const mesActual = hoy.getMonth() + 1;
+        if (anio < anioActual || (anio === anioActual && mes < mesActual)) {
+            throw new Error("La tarjeta está vencida.");
+        }
     }
     /** Identifica la franquicia por los primeros dígitos. */
     static #franquicia(n) {

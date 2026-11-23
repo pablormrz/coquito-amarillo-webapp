@@ -109,7 +109,8 @@
             <form id="form-pago" novalidate autocomplete="off">
                 <fieldset class="medios">
                     <legend>Medio de pago</legend>
-                    <label><input type="radio" name="medio" value="tarjeta"> Tarjeta <small id="com-tarjeta"></small></label>
+                    <label><input type="radio" name="medio" value="tarjeta"> Tarjeta <small
+                            id="com-tarjeta"></small></label>
                     <label><input type="radio" name="medio" value="pse"> PSE <small id="com-pse"></small></label>
                     <label><input type="radio" name="medio" value="nequi"> Nequi <small id="com-nequi"></small></label>
                 </fieldset>
@@ -117,19 +118,21 @@
                     <legend>Datos de la tarjeta</legend>
                     <div class="campo">
                         <label for="tarjeta-numero">Número de tarjeta</label>
-                        <input id="tarjeta-numero" inputmode="numeric" placeholder="4111 1111 1111 1111">
+                        <input id="tarjeta-numero" inputmode="numeric" placeholder="4111 1111 1111 1111"
+                            autocomplete="cc-number" maxlength="19">
                     </div>
                     <div class="campo">
                         <label for="tarjeta-titular">Titular</label>
-                        <input id="tarjeta-titular" placeholder="Como aparece en la tarjeta">
+                        <input id="tarjeta-titular" placeholder="Como aparece en la tarjeta" autocomplete="cc-name">
                     </div>
                     <div class="campo">
                         <label for="tarjeta-vencimiento">Vencimiento (MM/AA)</label>
-                        <input id="tarjeta-vencimiento" placeholder="12/28" maxlength="5">
+                        <input id="tarjeta-vencimiento" placeholder="12/28" maxlength="5" inputmode="numeric"
+                            autocomplete="cc-exp">
                     </div>
                     <div class="campo">
                         <label for="tarjeta-cvv">CVV</label>
-                        <input id="tarjeta-cvv" type="password" inputmode="numeric" maxlength="4">
+                        <input id="tarjeta-cvv" type="password" inputmode="numeric" maxlength="4" autocomplete="cc-csc">
                     </div>
                 </fieldset>
                 <fieldset id="datos-pse" class="datos-pago rejilla-2" hidden>
