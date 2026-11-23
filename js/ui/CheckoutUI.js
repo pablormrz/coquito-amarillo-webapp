@@ -37,7 +37,7 @@ export class CheckoutUI {
         this.#capturarElementos();
         this.#poblarListas();
         this.#enlazarEventos();
-        this.#mostrarMedio("tarjeta");
+        this.#mostrarMedio(null);
         this.#renderTodo();
         this.#renderHistorial();
     }
@@ -111,6 +111,8 @@ export class CheckoutUI {
             this.#repositorio.guardar(transaccion); // RF-08
             this.#carrito.vaciar();
             this.#limpiarDatosPago();
+            for (const r of e.formPago.elements.medio) r.checked = false;
+            this.#mostrarMedio(null);
             this.#estado(e.estadoPago, `✔ Pago aprobado. Ganaste puntos: ahora tienes ${this.#cliente.puntos} puntos Coquito.`, "ok");
             this.#mostrarRecibo(transaccion);
             this.#renderTodo();
@@ -219,6 +221,7 @@ export class CheckoutUI {
     #crearMedio() {
         const e = this.#el;
         const tipo = e.formPago.elements.medio.value;
+        if (!tipo) throw new Error("Seleccione un medio de pago.");
         const fabricas = {
             tarjeta: () => new PagoTarjeta({
                 numero: e.tarjetaNumero.value, titular: e.tarjetaTitular.value,
@@ -230,6 +233,7 @@ export class CheckoutUI {
             }),
             nequi: () => new PagoNequi({ celular: e.nequiCelular.value })
         };
+        if (!fabricas[tipo]) throw new Error("Seleccione un medio de pago.");
         return fabricas[tipo]();
     }
     #datosEnvio() {
@@ -254,6 +258,9 @@ export class CheckoutUI {
         this.#el.datosTarjeta.hidden = tipo !== "tarjeta";
         this.#el.datosPse.hidden = tipo !== "pse";
         this.#el.datosNequi.hidden = tipo !== "nequi";
+        if (tipo === "tarjeta") this.#el.tarjetaNumero?.focus();
+        else if (tipo === "pse") this.#el.pseBanco?.focus();
+        else if (tipo === "nequi") this.#el.nequiCelular?.focus();
     }
     // =================== Renderizado ===================
     #renderTodo() {
