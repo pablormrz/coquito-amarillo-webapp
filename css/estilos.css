@@ -1,18 +1,24 @@
 /* ===== Variables (paleta Coquito Amarillo, contraste AA) ===== */
 :root {
-    --amarillo: #F2C230;
-    --amarillo-claro: #FFF4CC;
-    --cafe: #5A3A12;
-    --cafe-oscuro: #3B2A14;
-    --verde: #1E6B3A;
-    --rojo: #B3261E;
-    --fondo: #FFFBF2;
-    --superficie: #FFFFFF;
-    --texto: #2B2118;
-    --texto-suave: #5E5246;
-    --borde: #E3D6BF;
-    --radio: 12px;
-    --sombra: 0 4px 14px rgba(59, 42, 20, .08);
+    --amarillo-suave: #FFF3CD;
+    --amarillo-medio: #F5D98E;
+    --amarillo-fuerte: #E8C96B;
+    --crema: #FFFBF0;
+    --rosa-pastel: #FFD6E0;
+    --lila-pastel: #E2D4F0;
+    --verde-pastel: #D4EDDA;
+    --azul-pastel: #D6EAF8;
+    --texto-primario: #4A3728;
+    --texto-secundario: #7A6654;
+    --borde-input: #E8DCC8;
+    --fondo-input: #FFFDF7;
+    --sombra: rgba(139, 109, 71, 0.08);
+    --sombra-hover: rgba(139, 109, 71, 0.16);
+    --exito: #5BA06D;
+    --error: #D45D5D;
+    --radio: 14px;
+    --exito-texto: #2D663B;
+    --error-texto: #9C2A2A;
     --fuente: system-ui, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
@@ -29,13 +35,13 @@
 body {
     margin: 0;
     font-family: var(--fuente);
-    color: var(--texto);
-    background: var(--fondo);
+    color: var(--texto-primario);
+    background: var(--crema);
     line-height: 1.5;
 }
 
 h2 {
-    color: var(--cafe-oscuro);
+    color: var(--texto-primario);
     margin-top: 0;
     display: flex;
     align-items: center;
@@ -43,7 +49,7 @@ h2 {
 }
 
 a {
-    color: var(--cafe);
+    color: var(--texto-primario);
 }
 
 .contenedor {
@@ -65,25 +71,24 @@ a {
 }
 
 :focus-visible {
-    outline: 3px solid var(--cafe);
+    outline: 3px solid var(--texto-primario);
     outline-offset: 2px;
 }
 
 /* ===== Encabezado ===== */
 .encabezado {
-    background: var(--amarillo);
+    background: var(--amarillo-fuerte);
     position: sticky;
     top: 0;
     z-index: 5;
-    box-shadow: var(-- sombra);
+    box-shadow: 0 4px 14px var(--sombra);
 }
 
 .encabezado__fila {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-items:
-        center;
+    align-items: center;
     gap: .5rem;
     padding: .75rem 0;
 }
@@ -92,7 +97,24 @@ a {
     margin: 0;
     font-weight: 800;
     font-size: 1.3rem;
-    color: var(--cafe-oscuro);
+    color: var(--texto-primario);
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.marca__enlace {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    border-radius: var(--radio);
+}
+
+.marca__logo {
+    width: 40px;
+    height: 40px;
+    display: block;
+    flex-shrink: 0;
 }
 
 .marca small {
@@ -108,31 +130,37 @@ a {
 
 .encabezado__acciones label {
     font-weight: 600;
-    color: var(--cafe-oscuro);
+    color: var(--texto-primario);
 }
 
 .contador {
-    background: var(--cafe-oscuro);
+    background: var(--texto-primario);
     color: #fff;
     padding: .35rem .8rem;
     border-radius: 999px;
     text-decoration: none;
     font-weight: 700;
+    transition: transform .15s, box-shadow .15s;
+}
+
+.contador:hover {
+    box-shadow: 0 4px 10px var(--sombra-hover);
 }
 
 /* ===== Paneles ===== */
 .panel {
-    background: var(--superficie);
-    border: 1px solid var(--borde);
+    background: #FFFFFF;
+    border: 1px solid var(--borde-input);
     border-radius: var(--radio);
-    box-shadow: var(--sombra);
+    box-shadow: 0 4px 14px var(--sombra);
     padding: 1.25rem;
     margin: 1.25rem 0;
 }
 
 .paso {
-    background: var(--amarillo);
-    color: var(--cafe-oscuro);
+    background: var(--amarillo-fuerte);
+    color: var(--texto-primario);
+    font-weight: 800;
     width: 2rem;
     height: 2rem;
     border-radius: 50%;
@@ -177,20 +205,30 @@ input,
 select {
     font: inherit;
     padding: .6rem;
-    border: 2px solid var(--borde);
+    border: 2px solid var(--borde-input);
     border-radius: 8px;
-    background: #fff;
-    color: var(--texto);
+    background: var(--fondo-input);
+    color: var(--texto-primario);
 }
 
 input:focus,
 select:focus {
-    border-color: var(--cafe);
+    border-color: var(--texto-primario);
     outline: none;
 }
 
+input:user-invalid,
+select:user-invalid {
+    border-color: var(--error);
+}
+
+input:user-valid:not([type="checkbox"]):not([type="radio"]),
+select:user-valid {
+    border-color: var(--exito);
+}
+
 fieldset {
-    border: 1px solid var(--borde);
+    border: 1px solid var(--borde-input);
     border-radius: var(--radio);
     margin: 0 0 1rem;
     padding: .75rem 1rem;
@@ -208,15 +246,21 @@ legend {
 }
 
 .medios small {
-    color: var(--texto-suave);
+    display: inline-block;
+    background: var(--lila-pastel);
+    color: var(--texto-primario);
+    padding: .15rem .5rem;
+    border-radius: 999px;
+    font-size: .8rem;
+    font-weight: 600;
 }
 
 .privacidad {
-    background: var(--amarillo-claro);
+    background: var(--amarillo-suave);
+    border: 1px solid var(--amarillo-medio);
     border-radius: 8px;
     padding: .6rem .9rem;
-    margin-top:
-        1rem;
+    margin-top: 1rem;
 }
 
 .privacidad summary {
@@ -229,27 +273,30 @@ legend {
     font: inherit;
     font-weight: 700;
     cursor: pointer;
-    border: 2px solid var(--cafe-oscuro);
-    background: var(--cafe-oscuro);
+    border: 2px solid var(--texto-primario);
+    background: var(--texto-primario);
     color: #fff;
     padding: .6rem 1.1rem;
     border-radius: 8px;
-    transition:
-        transform .15s, background .15s;
+    transition: transform .15s, background .15s, box-shadow .15s;
 }
 
 .btn:hover {
     transform: translateY(-1px);
-    background: var(--cafe);
+    background: #3B2A14;
+    box-shadow: 0 4px 12px var(--sombra-hover);
 }
 
 .btn--secundario {
     background: #fff;
-    color: var(--cafe-oscuro);
+    color: var(--texto-primario);
+    border: 2px solid var(--texto-primario);
 }
 
 .btn--secundario:hover {
-    background: var(--amarillo-claro);
+    background: var(--lila-pastel);
+    border-color: var(--texto-primario);
+    box-shadow: 0 4px 12px var(--sombra-hover);
 }
 
 .btn--mini {
@@ -267,6 +314,7 @@ legend {
     opacity: .5;
     cursor: not-allowed;
     transform: none;
+    box-shadow: none;
 }
 
 /* ===== Catálogo ===== */
@@ -277,12 +325,20 @@ legend {
 }
 
 .producto {
-    border: 1px solid var(--borde);
+    background: #FFFFFF;
+    border: 1px solid var(--borde-input);
     border-radius: var(--radio);
+    box-shadow: 0 2px 8px var(--sombra);
     padding: 1rem;
     display: flex;
     flex-direction: column;
     gap: .4rem;
+    transition: transform .15s, box-shadow .15s;
+}
+
+.producto:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px var(--sombra-hover);
 }
 
 .producto__emoji {
@@ -297,7 +353,7 @@ legend {
 .producto__precio {
     font-size: 1.2rem;
     font-weight: 800;
-    color: var(--cafe);
+    color: var(--texto-primario);
     margin: 0;
 }
 
@@ -305,12 +361,12 @@ legend {
     display: block;
     font-size: .85rem;
     font-weight: 600;
-    color: var(--texto-suave);
+    color: var(--texto-secundario);
 }
 
 .producto__stock {
     margin: 0;
-    color: var(--texto-suave);
+    color: var(--texto-secundario);
     font-size: .9rem;
 }
 
@@ -338,7 +394,7 @@ legend {
     gap: .5rem;
     align-items: center;
     padding: .6rem 0;
-    border-bottom: 1px solid var(--borde);
+    border-bottom: 1px solid var(--borde-input);
 }
 
 .carrito__controles {
@@ -375,13 +431,13 @@ legend {
 .resumen__total {
     font-size: 1.2rem;
     font-weight: 800;
-    color: var(--cafe-oscuro);
-    border-top: 2px solid var(--borde);
+    color: var(--texto-primario);
+    border-top: 2px solid var(--borde-input);
     padding-top: .4rem;
 }
 
 .nota {
-    color: var(--texto-suave);
+    color: var(--texto-secundario);
     font-size: .9rem;
 }
 
@@ -392,11 +448,11 @@ legend {
 }
 
 .estado--ok {
-    color: var(--verde);
+    color: var(--exito-texto);
 }
 
 .estado--error {
-    color: var(--rojo);
+    color: var(--error-texto);
 }
 
 .avisos:empty {
@@ -407,23 +463,34 @@ legend {
     margin: .75rem 0 0;
     padding: .7rem 1rem;
     border-radius: 8px;
-    border-left: 5px solid var(-- amarillo);
-    background: var(--amarillo-claro);
+    border-left: 5px solid var(--amarillo-fuerte);
+    background: var(--amarillo-suave);
+    color: var(--texto-primario);
+}
+
+.aviso--info {
+    border-left-color: #6BA3D6;
+    background: var(--azul-pastel);
+    color: var(--texto-primario);
 }
 
 .aviso--error {
-    border-color: var(--rojo);
-    background: #FDECEA;
+    border-left-color: var(--error);
+    background: var(--rosa-pastel);
+    color: var(--error-texto);
 }
 
 .aviso--ok {
-    border-color: var(--verde);
-    background: #E6F4EA;
+    border-left-color: var(--exito);
+    background: var(--verde-pastel);
+    color: var(--exito-texto);
 }
 
 /* ===== Recibo e historial ===== */
 .recibo {
-    border: 2px dashed var(--cafe);
+    border: 2px dashed var(--texto-secundario);
+    background: var(--fondo-input);
+    border-radius: var(--radio);
 }
 
 .recibo table {
@@ -435,7 +502,7 @@ legend {
 .recibo th,
 .recibo td {
     padding: .4rem;
-    border-bottom: 1px solid var(--borde);
+    border-bottom: 1px solid var(--borde-input);
     text-align: left;
 }
 
@@ -453,18 +520,18 @@ legend {
 }
 
 .etiqueta--APROBADA {
-    background: #E6F4EA;
-    color: var(--verde);
+    background: var(--verde-pastel);
+    color: var(--exito-texto);
 }
 
 .etiqueta--RECHAZADA {
-    background: #FDECEA;
-    color: var(--rojo);
+    background: var(--rosa-pastel);
+    color: var(--error-texto);
 }
 
 .etiqueta--PENDIENTE {
-    background: var(--amarillo-claro);
-    color: var(--cafe);
+    background: var(--amarillo-suave);
+    color: var(--texto-primario);
 }
 
 .historial {
@@ -478,25 +545,33 @@ legend {
     justify-content: space-between;
     gap: .5rem;
     padding: .6rem 0;
-    border-bottom: 1px solid var(--borde);
+    border-bottom: 1px solid var(--borde-input);
 }
 
 /* ===== Pie ===== */
 .pie {
-    background: var(--cafe-oscuro);
+    background: var(--texto-primario);
     color: #fff;
     padding: 1.25rem 0;
     font-size: .9rem;
-    margin-top:
-        2rem;
+    margin-top: 2rem;
 }
 
 .pie a {
-    color: var(--amarillo);
+    color: var(--amarillo-medio);
+}
+
+.pie a:hover {
+    color: #fff;
 }
 
 /* ===== Responsive ===== */
 @media (min-width: 640px) {
+    .marca__logo {
+        width: 44px;
+        height: 44px;
+    }
+
     .rejilla-2 {
         grid-template-columns: 1fr 1fr;
     }
