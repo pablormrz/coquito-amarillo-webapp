@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Prototipo de tienda web de Coquito Amarillo SAS: productos típicos colombianos.">
+    <title>Coquito Amarillo SAS · Tienda en línea</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+    <a class="saltar" href="#contenido">Saltar al contenido</a>
+    <!-- ===== ENCABEZADO ===== -->
+    <header class="encabezado">
+        <div class="contenedor encabezado__fila">
+            <p class="marca"><span aria-hidden="true"> </span> Coquito Amarillo <small>SAS</small></p>
+            <div class="encabezado__acciones">
+                <label for="moneda">Moneda</label>
+                <select id="moneda">
+                    <option value="COP">COP · Peso colombiano</option>
+                    <option value="USD">USD · Dólar</option>
+                    <option value="EUR">EUR · Euro</option>
+                </select>
+                <a href="#carrito" class="contador" aria-label="Ir al carrito"><span id="contador-carrito">0</span></a>
+            </div>
+        </div>
+    </header>
+    <!-- Mensajes para el usuario (avisos de API, errores, confirmaciones) -->
+    <div id="avisos" class="avisos contenedor" aria-live="polite"></div>
+    <main id="contenido" class="contenedor">
+        <!-- ===== 1. REGISTRO DEL CLIENTE (RF-01) ===== -->
+        <section class="panel" id="registro" aria-labelledby="t-registro">
+            <h2 id="t-registro"><span class="paso">1</span> Tus datos</h2>
+            <form id="form-registro" novalidate>
+                <div class="rejilla-2">
+                    <div class="campo">
+                        <label for="nombre">Nombre completo</label>
+                        <input id="nombre" name="nombre" autocomplete="name" required>
+                    </div>
+                    <div class="campo">
+                        <label for="correo">Correo electrónico</label>
+                        <input id="correo" name="correo" type="email" autocomplete="email" required>
+                    </div>
+                    <div class="campo">
+                        <label for="ciudad">Ciudad de entrega</label>
+                        <select id="ciudad" name="ciudad" required>
+                            <option value="">Seleccione…</option>
+                        </select>
+                    </div>
+                    <div class="campo campo--boton">
+                        <button type="button" id="btn-ubicacion" class="btn btn--secundario">Usar mi ubicación</button>
+                    </div>
+                </div>
+                <details class="privacidad">
+                    <summary>Aviso de privacidad (Ley 1581 de 2012)</summary>
+                    <p>Coquito Amarillo SAS (empresa ficticia con fines académicos) es responsable del
+                        tratamiento de tu nombre,
+                        correo y ubicación, que se usan únicamente para gestionar tu pedido, calcular el envío y
+                        enviarte el recibo.
+                        Puedes conocer, actualizar, rectificar y suprimir tus datos, y revocar esta autorización
+                        en cualquier momento.
+                        Los datos de tarjeta <strong>nunca se almacenan ni se envían</strong>: solo se validan en
+                        tu navegador.</p>
+                </details>
+                <div class="campo campo--check">
+                    <input type="checkbox" id="autorizacion" name="autorizacion" required>
+                    <label for="autorizacion">Autorizo el tratamiento de mis datos personales según el aviso de
+                        privacidad.</label>
+                </div>
+                <button type="submit" class="btn">Guardar mis datos</button>
+                <p id="estado-registro" class="estado" role="status"></p>
+            </form>
+        </section>
+        <!-- ===== 2. CATÁLOGO (RF-02) ===== -->
+        <section class="panel" id="catalogo-seccion" aria-labelledby="t-catalogo">
+            <h2 id="t-catalogo"><span class="paso">2</span> Catálogo</h2>
+            <div id="catalogo" class="catalogo"></div>
+        </section>
+        <!-- ===== 3. CARRITO (RF-03) ===== -->
+        <section class="panel" id="carrito" aria-labelledby="t-carrito">
+            <h2 id="t-carrito"><span class="paso">3</span> Tu carrito</h2>
+            <p id="carrito-vacio">Tu carrito está vacío.</p>
+            <ul id="carrito-lista" class="carrito"></ul>
+            <p class="carrito__subtotal">Subtotal: <strong id="carrito-subtotal">$ 0</strong></p>
+        </section>
+        <!-- ===== 4. ENVÍO Y TOTAL (RF-04, RF-05) ===== -->
+        <section class="panel" id="envio" aria-labelledby="t-envio">
+            <h2 id="t-envio"><span class="paso">4</span> Envío y total</h2>
+            <button type="button" id="btn-cotizar" class="btn btn--secundario">Cotizar envío</button>
+            <p id="info-envio" class="estado"></p>
+            <dl class="resumen">
+                <dt>Productos</dt>
+                <dd id="res-subtotal">$ 0</dd>
+                <dt>Envío</dt>
+                <dd id="res-envio">Sin cotizar</dd>
+                <dt>Comisión del medio de pago</dt>
+                <dd id="res-comision">Se calcula al pagar</dd>
+                <dt class="resumen__total">Total (COP)</dt>
+                <dd class="resumen__total" id="res-total">$ 0</dd>
+                <dt>Total en tu moneda</dt>
+                <dd id="res-total-moneda">—</dd>
+            </dl>
+            <p id="res-tasa" class="nota"></p>
+        </section>
+        <!-- ===== 5. PAGO (RF-06, RF-07) ===== -->
+        <section class="panel" id="pago" aria-labelledby="t-pago">
+            <h2 id="t-pago"><span class="paso">5</span> Pago</h2>
+            <form id="form-pago" novalidate autocomplete="off">
+                <fieldset class="medios">
+                    <legend>Medio de pago</legend>
+                    <label><input type="radio" name="medio" value="tarjeta" checked> Tarjeta <small
+                            id="com-tarjeta"></small></label>
+                    <label><input type="radio" name="medio" value="pse"> PSE <small id="com-pse"></small></label>
+                    <label><input type="radio" name="medio" value="nequi"> Nequi <small id="com-nequi"></small></label>
+                </fieldset>
+                <fieldset id="datos-tarjeta" class="datos-pago rejilla-2">
+                    <legend>Datos de la tarjeta</legend>
+                    <div class="campo">
+                        <label for="tarjeta-numero">Número de tarjeta</label>
+                        <input id="tarjeta-numero" inputmode="numeric" placeholder="4111 1111 1111 1111">
+                    </div>
+                    <div class="campo">
+                        <label for="tarjeta-titular">Titular</label>
+                        <input id="tarjeta-titular" placeholder="Como aparece en la tarjeta">
+                    </div>
+                    <div class="campo">
+                        <label for="tarjeta-vencimiento">Vencimiento (MM/AA)</label>
+                        <input id="tarjeta-vencimiento" placeholder="12/28" maxlength="5">
+                    </div>
+                    <div class="campo">
+                        <label for="tarjeta-cvv">CVV</label>
+                        <input id="tarjeta-cvv" type="password" inputmode="numeric" maxlength="4">
+                    </div>
+                </fieldset>
+                <fieldset id="datos-pse" class="datos-pago rejilla-2" hidden>
+                    <legend>Datos PSE</legend>
+                    <div class="campo">
+                        <label for="pse-banco">Banco</label>
+                        <select id="pse-banco">
+                            <option value="">Seleccione…</option>
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <label for="pse-tipo">Tipo de persona</label>
+                        <select id="pse-tipo">
+                            <option value="">Seleccione…</option>
+                            <option value="natural">Natural</option>
+                            <option value="juridica">Jurídica</option>
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <label for="pse-documento">Número de documento</label>
+                        <input id="pse-documento" inputmode="numeric">
+                    </div>
+                </fieldset>
+                <fieldset id="datos-nequi" class="datos-pago" hidden>
+                    <legend>Datos Nequi</legend>
+                    <div class="campo">
+                        <label for="nequi-celular">Celular Nequi</label>
+                        <input id="nequi-celular" inputmode="numeric" placeholder="3001234567">
+                    </div>
+                </fieldset>
+                <button type="submit" id="btn-pagar" class="btn btn--grande">Pagar</button>
+                <p id="estado-pago" class="estado" role="status"></p>
+            </form>
+        </section>
+        <!-- ===== RECIBO (RF-07) ===== -->
+        <section class="panel recibo" id="recibo" aria-labelledby="t-recibo" hidden tabindex="-1">
+            <h2 id="t-recibo">Recibo</h2>
+            <div id="recibo-contenido"></div>
+            <button type="button" id="btn-cerrar-recibo" class="btn btn--secundario">Cerrar recibo</button>
+        </section>
+        <!-- ===== HISTORIAL (RF-08) ===== -->
+        <section class="panel" id="historial" aria-labelledby="t-historial">
+            <h2 id="t-historial">Historial de compras</h2>
+            <ul id="historial-lista" class="historial"></ul>
+            <button type="button" id="btn-borrar-historial" class="btn btn--secundario">Borrar historial</button>
+        </section>
+    </main>
+    <!-- ===== PIE: atribución obligatoria de las APIs ===== -->
+    <footer class="pie">
+        <div class="contenedor">
+            <p>Tasas de cambio provistas por <a href="https://www.exchangerate-api.com" target="_blank"
+                    rel="noopener">ExchangeRate-API</a>.
+                Datos meteorológicos de <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open
+                    Meteo.com</a> (CC BY 4.0).</p>
+            <p>Coquito Amarillo SAS es una empresa ficticia con fines académicos · LPW01 · FUMC 2026-2.
+                Tarifas y comisiones ilustrativas. Pagos simulados.</p>
+        </div>
+    </footer>
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>
