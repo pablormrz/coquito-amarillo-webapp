@@ -177,11 +177,11 @@ classDiagram
 
 ### Tarjetas de prueba sugeridas
 
-| Franquicia | Número (sin espacios) | Se muestra | Vencimiento | CVV | Resultado en recibo |
+| Franquicia | Número (sin espacios) | Se muestra | Vencimiento y CVV | Resultado en recibo |
 |---|---|---|---|---|
-| **Visa** (16 dígitos) | `4111111111111111` | `4111 1111 1111 1111` | Futuro (ej. `12/28`) | `123` | `Visa •••• 1111` |
-| **American Express** (15 dígitos) | `378282246310005` | `3782 822463 10005` | Futuro (ej. `01/30`) | `1234` | `Amex •••• 0005` |
-| **Mastercard** (16 dígitos)| `5105105105105100` | `5105 1051 0510 5100` | Futuro (ej. `07/33`) | `321` | `Mastercard •••• 5100` |
+| **Visa** (16 dígitos) | `4111111111111111` | `4111 1111 1111 1111` | Futuro (ej. `12/28`) - `123` | `Visa •••• 1111` |
+| **American Express** (15 dígitos) | `378282246310005` | `3782 822463 10005` | Futuro (ej. `01/30`) - `1234` | `Amex •••• 0005` |
+| **Mastercard** (16 dígitos)| `5105105105105100` | `5105 1051 0510 5100` | Futuro (ej. `07/33`) - `321` | `Mastercard •••• 5100` |
 
 ### Flujo de prueba recomendado:
 1. Completa el **Paso 1 (Tus datos)** y marca la casilla de autorización.
